@@ -10,6 +10,7 @@ package kr.pe.heylocal.crawling.service;
 
 import kr.pe.heylocal.crawling.crawler.task.CrawlingTaskExecutor;
 import kr.pe.heylocal.crawling.dto.MenuDto;
+import kr.pe.heylocal.crawling.exception.ServiceUnavailableException;
 import kr.pe.heylocal.crawling.mapper.MenuMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -30,7 +31,7 @@ public class PlaceMenuService {
    * @param placeId
    * @return
    */
-  public List<MenuDto> inquiryMenuInfoOfPlace(String placeId) {
+  public List<MenuDto> inquiryMenuInfoOfPlace(String placeId) throws ServiceUnavailableException {
     String targetUrl = kakaoPlaceDomain + "/" + placeId; //크롤링할 URL
     Map<String, String> result = crawlingTaskExecutor.execute(targetUrl); //크롤링
 
