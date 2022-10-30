@@ -23,6 +23,7 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.seleniumhq.selenium:selenium-java:4.5.3'
 	implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb-reactive'
 
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
