@@ -35,7 +35,7 @@ public class MenuCrawlingTask implements CrawlingTask {
    */
   @Override
   public Map<String, List<String>> doTask(CrawlingDriver crawlingDriver, String url) {
-    Map<String, List<String>> result = new HashMap<>();
+    Map<String, List<String>> result;
 
     crawlingDriver.get(url); //페이지 로드
     crawlingDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(30));
@@ -52,35 +52,51 @@ public class MenuCrawlingTask implements CrawlingTask {
           .findElements(By.className(PHOTO_CLASS));
 
       //로드된 HTML에서 메뉴이름, 메뉴가격 가져오기
-      subMenuElementList.stream().forEach(
-          (element) -> {
-            String menuName =
-                element.findElement(By.className("info_menu")).findElement(By.className("loss_word")).getText();
-            String menuPrice =
-                element.findElement(By.className("info_menu")).findElement(By.className("price_menu")).getText();
-            String menuPhoto =
-                element.findElement(By.className("img_thumb")).getAttribute("src");
-            ArrayList<String> info = new ArrayList<>();
-            info.add(menuPrice);
-            info.add(menuPhoto);
-            result.put(menuName, info);
-          }
-      );
+      result = getPhotoMenuInfo(subMenuElementList);
 
     } else { //사진없는 메뉴인 경우
       //로드된 HTML에서 메뉴이름, 메뉴가격 가져오기
-      subMenuElementList.stream().forEach(
-          (element) -> {
-            String menuName =
-                element.findElement(By.className("info_menu")).findElement(By.className("loss_word")).getText();
-            String menuPrice =
-                element.findElement(By.className("info_menu")).findElement(By.className("price_menu")).getText();
-            ArrayList<String> info = new ArrayList<>();
-            info.add(menuPrice);
-            result.put(menuName, info);
-          }
-      );
+      result = getNoPhotoMenuInfo(subMenuElementList);
     }
+
+    return result;
+  }
+
+  private Map<String, List<String>> getNoPhotoMenuInfo(List<WebElement> subMenuElementList) {
+    Map<String, List<String>> result = new HashMap<>();
+
+    subMenuElementList.stream().forEach(
+        (element) -> {
+          String menuName =
+              element.findElement(By.className("info_menu")).findElement(By.className("loss_word")).getText();
+          String menuPrice =
+              element.findElement(By.className("info_menu")).findElement(By.className("price_menu")).getText();
+          ArrayList<String> info = new ArrayList<>();
+          info.add(menuPrice);
+          result.put(menuName, info);
+        }
+    );
+
+    return result;
+  }
+
+  private Map<String, List<String>> getPhotoMenuInfo(List<WebElement> subMenuElementList) {
+    Map<String, List<String>> result = new HashMap<>();
+
+    subMenuElementList.stream().forEach(
+        (element) -> {
+          String menuName =
+              element.findElement(By.className("info_menu")).findElement(By.className("loss_word")).getText();
+          String menuPrice =
+              element.findElement(By.className("info_menu")).findElement(By.className("price_menu")).getText();
+          String menuPhoto =
+              element.findElement(By.className("img_thumb")).getAttribute("src");
+          ArrayList<String> info = new ArrayList<>();
+          info.add(menuPrice);
+          info.add(menuPhoto);
+          result.put(menuName, info);
+        }
+    );
 
     return result;
   }
