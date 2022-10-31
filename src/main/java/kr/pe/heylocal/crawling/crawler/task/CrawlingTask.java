@@ -10,6 +10,7 @@ package kr.pe.heylocal.crawling.crawler.task;
 
 import kr.pe.heylocal.crawling.crawler.driver.CrawlingDriver;
 
+import java.util.List;
 import java.util.Map;
 
 public interface CrawlingTask {
@@ -20,5 +21,5 @@ public interface CrawlingTask {
    * @param url 크롤링할 URL
    * @return 크롤링한 정보
    */
-  Map<String, String> doTask(CrawlingDriver crawlingDriver, String url);
+  Map<String, List<String>> doTask(CrawlingDriver crawlingDriver, String url);
 }

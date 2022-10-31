@@ -1,3 +1,11 @@
+/**
+ * packageName    : kr.pe.heylocal.crawling.controller.advice
+ * fileName       : ControllerAdvice
+ * author         : 우태균
+ * date           : 2022/10/31
+ * description    : 에러 응답 처리 어드바이스
+ */
+
 package kr.pe.heylocal.crawling.controller.advice;
 
 import kr.pe.heylocal.crawling.dto.ErrorMessageDto;

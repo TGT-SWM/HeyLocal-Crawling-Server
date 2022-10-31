@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import org.openqa.selenium.NoSuchElementException;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Map;
 
 @Component
@@ -32,12 +33,12 @@ public class CrawlingTaskExecutor {
    * @param url 크롤링할 URL
    * @return 크롤링한 정보 결과
    */
-  public Map<String, String> execute(String url) throws ServiceUnavailableException {
+  public Map<String, List<String>> execute(String url) throws ServiceUnavailableException {
     //유휴 Driver 가져오기
     CrawlingDriver driver = crawlingDriverPool.findIdleDriver();
 
     //크롤링 수행
-    Map<String, String> result = null;
+    Map<String, List<String>> result = null;
     try {
       result = crawlingTask.doTask(driver, url);
     } catch (NoSuchElementException e) {
@@ -45,7 +46,7 @@ public class CrawlingTaskExecutor {
     } finally {
       //Driver Cache Clear
       driver.manage().deleteAllCookies();
-      //Driver Status Change
+      //Driver Status Change (유휴 상태로)
       driver.setIdleStatus(true);
     }
 
