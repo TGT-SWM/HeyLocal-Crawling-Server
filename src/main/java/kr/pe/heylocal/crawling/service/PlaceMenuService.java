@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -36,9 +37,10 @@ public class PlaceMenuService {
    * @param placeId
    * @return
    */
+  @Transactional
   public List<MenuDto> inquiryMenuInfoOfPlace(String placeId) throws ServiceUnavailableException {
     List<MenuDto> result;
-    List<Menu> cachedResult = menuRepository.findAllByPlaceId(placeId);
+    List<Menu> cachedResult = menuRepository.findByPlaceId(placeId);
 
     if (cachedResult.size() != 0) { //만약 캐싱되어 있다면
       log.info("캐싱 출력");

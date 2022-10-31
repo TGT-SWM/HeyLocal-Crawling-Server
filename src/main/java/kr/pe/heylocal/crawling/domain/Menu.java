@@ -1,10 +1,23 @@
+/**
+ * packageName    : kr.pe.heylocal.crawling.domain
+ * fileName       : Menu
+ * author         : 우태균
+ * date           : 2022/10/31
+ * description    : 메뉴 엔티티
+ */
+
 package kr.pe.heylocal.crawling.domain;
 
 import lombok.*;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "menu")
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+
+@Entity
+@Table(name = "MENU")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,7 +25,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Builder
 public class Menu {
   @Id
-  private String id;
+  @GeneratedValue
+  private Long id;
   private String placeId; //카카오 장소 API 에서 제공하는 장소 ID
   private String name;
   private String price;
