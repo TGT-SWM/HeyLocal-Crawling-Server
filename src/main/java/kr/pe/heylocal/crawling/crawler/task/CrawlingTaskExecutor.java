@@ -45,7 +45,7 @@ public class CrawlingTaskExecutor {
     } finally {
       //Driver Cache Clear
       driver.manage().deleteAllCookies();
-      //Driver Status Change
+      //Driver Status Change (유휴 상태로)
       driver.setIdleStatus(true);
     }
 

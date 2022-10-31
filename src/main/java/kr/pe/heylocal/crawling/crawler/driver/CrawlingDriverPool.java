@@ -40,7 +40,7 @@ public class CrawlingDriverPool {
       for (int i = 0; i < MAX_POOL_SIZE; i++) { //for 문 시작
         CrawlingDriver driver = pool.get(i);
         if (driver.getIdleStatus()) {
-          driver.setIdleStatus(false);
+          driver.setIdleStatus(false); //유휴 상태에서 working 상태로 변경
           return driver;
         }
       } //for 문 종료
