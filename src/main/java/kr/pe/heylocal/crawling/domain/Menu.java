@@ -9,6 +9,7 @@
 package kr.pe.heylocal.crawling.domain;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -22,8 +23,8 @@ import javax.persistence.Table;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class Menu {
+@SuperBuilder
+public class Menu extends BaseTimeEntity {
   @Id
   @GeneratedValue
   private Long id;

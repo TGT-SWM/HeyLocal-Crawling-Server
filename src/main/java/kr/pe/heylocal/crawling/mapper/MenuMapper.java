@@ -27,6 +27,8 @@ public interface MenuMapper {
   MenuDto toMenuDto(Menu menu);
   @Mapping(target = "placeId", source = "placeId")
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "createdDate", ignore = true)
+  @Mapping(target = "modifiedDate", ignore = true)
   Menu toMenuEntity(MenuDto menuDto, String placeId);
 
   default List<MenuDto> toMenuDtoList(Map<String, String> menuInfoMap) {
