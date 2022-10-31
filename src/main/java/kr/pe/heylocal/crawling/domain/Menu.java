@@ -37,4 +37,5 @@ public class Menu extends BaseTimeEntity {
   @Column(name = "NAME")
   private String name;
   private String price;
+  private String photo;
 }

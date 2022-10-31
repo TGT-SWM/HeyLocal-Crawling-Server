@@ -38,7 +38,7 @@ public class CrawlingService {
   @Transactional
   public List<MenuDto> crawlingMenu(String placeId) throws ServiceUnavailableException {
     List<MenuDto> result;
-    Map<String, String> crawlingResult = getMenuInfoFromCrawler(placeId);
+    Map<String, List<String>> crawlingResult = getMenuInfoFromCrawler(placeId);
 
     result = MenuMapper.INSTANCE.toMenuDtoList(crawlingResult);
     saveMenu(placeId, result); //크롤링 결과를 DB에 저장
@@ -53,7 +53,7 @@ public class CrawlingService {
     });
   }
 
-  private Map<String, String> getMenuInfoFromCrawler(String placeId) throws ServiceUnavailableException {
+  private Map<String, List<String>> getMenuInfoFromCrawler(String placeId) throws ServiceUnavailableException {
     String targetUrl = kakaoPlaceDomain + "/" + placeId; //크롤링할 URL
     return crawlingTaskExecutor.execute(targetUrl); //크롤링
   }
