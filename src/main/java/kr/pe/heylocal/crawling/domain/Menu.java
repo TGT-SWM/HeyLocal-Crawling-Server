@@ -11,14 +11,18 @@ package kr.pe.heylocal.crawling.domain;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 
 @Entity
-@Table(name = "MENU")
+@Table(name = "MENU",
+    uniqueConstraints={
+        @UniqueConstraint(
+            name="complex_unique",
+            columnNames={"PLACE_ID", "NAME"}
+        )
+    }
+)
 @Getter
 @Setter
 @NoArgsConstructor
@@ -28,7 +32,9 @@ public class Menu extends BaseTimeEntity {
   @Id
   @GeneratedValue
   private Long id;
+  @Column(name = "PLACE_ID")
   private String placeId; //카카오 장소 API 에서 제공하는 장소 ID
+  @Column(name = "NAME")
   private String name;
   private String price;
 }
