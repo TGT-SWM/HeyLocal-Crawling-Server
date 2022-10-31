@@ -1,3 +1,11 @@
+/**
+ * packageName    : kr.pe.heylocal.crawling.service
+ * fileName       : CrawlingService
+ * author         : 우태균
+ * date           : 2022/10/30
+ * description    : 크롤링 서비스
+ */
+
 package kr.pe.heylocal.crawling.service;
 
 import kr.pe.heylocal.crawling.crawler.task.CrawlingTaskExecutor;
@@ -23,7 +31,7 @@ public class CrawlingService {
   private final MenuRepository menuRepository;
 
   /**
-   * 메뉴 정보 조회 메서드
+   * 크롤링으로 메뉴 정보 조회 메서드
    * @param placeId
    * @return
    */
