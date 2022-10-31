@@ -16,12 +16,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
 public class PlaceMenuService {
+  public static final int CACHE_UPDATE_DAYS = 14; //캐시 데이터 업데이트 기준일
   @Value("${url.kakao.place}")
   public String kakaoPlaceDomain; //카카오 장소 도메인 주소
   private final CrawlingService crawlingService;
@@ -38,17 +40,32 @@ public class PlaceMenuService {
 
     crawlingProcessWatcher.watch(placeId); //크롤링 감시 시작
 
-    result = cacheService.inquiryMenu(placeId);
-    if (result.size() != 0) { //만약 캐싱되어 있다면
-      return result;
+    LocalDateTime savedDateTime = cacheService.getSavedDateTime(placeId);
 
-    } else { //만약 캐싱되어 있지 않다면
-      result = crawlingService.crawlingMenu(placeId);
+    if (savedDateTime != null) { //만약 캐싱되어 있고,
+      boolean isOldCacheData = isOldCacheData(savedDateTime);
+
+      if (!isOldCacheData) { //오래된 데이터가 아니라면
+        result = cacheService.inquiryMenu(placeId); //DB에서 메뉴 조회
+        return result;
+
+      } else { //오래된 데이터라면
+        cacheService.removeAllMenuByPlaceId(placeId); //DB에 저장된 메뉴 정보 삭제
+      }
     }
+
+    //만약 캐싱되어 있지 않다면
+    result = crawlingService.crawlingMenuAndSave(placeId); //크롤러로 메뉴 조회
 
     crawlingProcessWatcher.done(placeId); //크롤링 감시 종료
 
     return result;
+  }
+
+  private boolean isOldCacheData(LocalDateTime lastSavedDateTime) {
+    LocalDateTime liveDateTime = LocalDateTime.now().minusDays(CACHE_UPDATE_DAYS);
+    if (lastSavedDateTime.isBefore(liveDateTime)) return true;
+    return false;
   }
 
 }

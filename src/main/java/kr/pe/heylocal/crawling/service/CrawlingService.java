@@ -31,12 +31,12 @@ public class CrawlingService {
   private final MenuRepository menuRepository;
 
   /**
-   * 크롤링으로 메뉴 정보 조회 메서드
+   * 크롤링으로 메뉴 정보를 조회하고 저장하는 메서드
    * @param placeId
    * @return
    */
   @Transactional
-  public List<MenuDto> crawlingMenu(String placeId) throws ServiceUnavailableException {
+  public List<MenuDto> crawlingMenuAndSave(String placeId) throws ServiceUnavailableException {
     List<MenuDto> result;
     Map<String, List<String>> crawlingResult = getMenuInfoFromCrawler(placeId);
 
@@ -46,7 +46,30 @@ public class CrawlingService {
     return result;
   }
 
+  /**
+   * 크롤링으로 메뉴 정보를 조회하고 업데이트하는 메서드
+   * @param placeId
+   * @return
+   */
+  @Transactional
+  public List<MenuDto> crawlingMenuAndUpdate(String placeId) throws ServiceUnavailableException {
+    List<MenuDto> result;
+    Map<String, List<String>> crawlingResult = getMenuInfoFromCrawler(placeId);
+
+    result = MenuMapper.INSTANCE.toMenuDtoList(crawlingResult);
+    updateMenu(placeId, result); //크롤링 결과를 DB에 업데이트
+
+    return result;
+  }
+
   private void saveMenu(String placeId, List<MenuDto> result) {
+    result.stream().forEach((item) -> {
+      Menu menuEntity = MenuMapper.INSTANCE.toMenuEntity(item, placeId);
+      menuRepository.save(menuEntity);
+    });
+  }
+
+  private void updateMenu(String placeId, List<MenuDto> result) {
     result.stream().forEach((item) -> {
       Menu menuEntity = MenuMapper.INSTANCE.toMenuEntity(item, placeId);
       menuRepository.save(menuEntity);
