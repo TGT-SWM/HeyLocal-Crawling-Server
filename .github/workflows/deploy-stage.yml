@@ -1,3 +1,10 @@
+# ====================== Header ======================
+# fileName       : deploy-stage.yml
+# author         : 우태균
+# date           : 2022/11/01
+# description    : Github Action 스크립트
+# ====================================================
+
 name: deploy-stage
 
 on:
