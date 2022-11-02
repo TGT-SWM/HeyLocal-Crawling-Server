@@ -9,6 +9,7 @@
 package kr.pe.heylocal.crawling.controller;
 
 import kr.pe.heylocal.crawling.dto.MenuDto;
+import kr.pe.heylocal.crawling.exception.ServiceUnavailableException;
 import kr.pe.heylocal.crawling.service.PlaceMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,7 +26,7 @@ public class PlaceController {
   private final PlaceMenuService placeMenuService;
 
   @GetMapping("/menu")
-  public List<MenuDto> test(@RequestParam String placeId) {
+  public List<MenuDto> test(@RequestParam String placeId) throws ServiceUnavailableException {
     return placeMenuService.inquiryMenuInfoOfPlace(placeId);
   }
 }

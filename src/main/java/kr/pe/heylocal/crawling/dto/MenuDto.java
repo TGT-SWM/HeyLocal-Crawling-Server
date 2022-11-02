@@ -18,4 +18,5 @@ import lombok.*;
 public class MenuDto {
   private String name;
   private String price;
+  private String photo;
 }

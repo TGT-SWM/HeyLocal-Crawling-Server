@@ -1,0 +1,57 @@
+# ====================== Header ======================
+# fileName       : deploy-stage.yml
+# author         : 우태균
+# date           : 2022/11/01
+# description    : Github Action 스크립트
+# ====================================================
+
+name: deploy-stage
+
+on:
+  push:
+    branches: [ stage ]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Set up JDK 18
+        uses: actions/setup-java@v1
+        with:
+          java-version: 18
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+        shell: bash
+
+      - name: Build with Gradle
+        run: ./gradlew build -x test
+        shell: bash
+
+      - name: Test with Gradle
+        run: ./gradlew test
+        shell: bash
+
+      # 추가
+      - name: Make zip file
+        run: zip -qq -r ./$GITHUB_SHA.zip .
+        shell: bash
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.ACCESS_KEY_SECRET }}
+          aws-region: ap-northeast-2
+
+      - name: Upload to S3
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://heylocal-codedeploy/$GITHUB_SHA.zip
+
+      - name: Code Deploy
+        run: aws deploy create-deployment --application-name heylocal-test-crawling
+          --deployment-config-name CodeDeployDefault.OneAtATime
+          --deployment-group-name heylocal-test-crawling-deploy-group
+          --s3-location bucket=heylocal-codedeploy,bundleType=zip,key=$GITHUB_SHA.zip
