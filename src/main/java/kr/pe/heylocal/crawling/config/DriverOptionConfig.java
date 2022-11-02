@@ -29,8 +29,6 @@ public class DriverOptionConfig {
    */
   @Bean
   public ChromeOptions chromeOptions() throws IOException {
-    System.out.println(webDriverPath);
-    System.out.println(new File(webDriverPath).getCanonicalPath());
     System.setProperty(webDriverId, new File(webDriverPath).getCanonicalPath());
 
     //WebDriver 옵션
