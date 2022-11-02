@@ -42,3 +42,4 @@ out/
 .AppleDouble
 .LSOverride
 /src/main/resources/db-auth-stage.properties
+/src/main/resources/db-auth-production.properties
