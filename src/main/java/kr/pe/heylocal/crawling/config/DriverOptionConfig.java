@@ -29,7 +29,11 @@ public class DriverOptionConfig {
    */
   @Bean
   public ChromeOptions chromeOptions() throws IOException {
-    System.setProperty(webDriverId, new File(webDriverPath).getCanonicalPath());
+    if (webDriverPath.startsWith("/")) {
+      System.setProperty(webDriverId, webDriverPath);
+    } else {
+      System.setProperty(webDriverId, new File(webDriverPath).getCanonicalPath());
+    }
 
     //WebDriver 옵션
     ChromeOptions options = new ChromeOptions();
