@@ -13,11 +13,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.io.File;
+import java.io.IOException;
+
 @Configuration
 public class DriverOptionConfig {
-  @Value("${browser.driver.path}")
-  public String webDriverId; //Properties 설정
   @Value("${browser.driver.id}")
+  public String webDriverId; //Properties 설정
+  @Value("${browser.driver.path}")
   public String webDriverPath; //WebDriver 경로
 
   /**
@@ -25,8 +28,10 @@ public class DriverOptionConfig {
    * @return 크롬 옵션 빈 객체
    */
   @Bean
-  public ChromeOptions chromeOptions() {
-    System.setProperty(webDriverId, webDriverPath);
+  public ChromeOptions chromeOptions() throws IOException {
+    System.out.println(webDriverPath);
+    System.out.println(new File(webDriverPath).getCanonicalPath());
+    System.setProperty(webDriverId, new File(webDriverPath).getCanonicalPath());
 
     //WebDriver 옵션
     ChromeOptions options = new ChromeOptions();
