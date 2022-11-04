@@ -35,9 +35,9 @@ public class MenuRepository {
         .getResultList();
   }
 
-  public Optional<Menu> findFirstByPlaceId(String placeId) {
+  public Optional<Menu> findFirstByPlaceId(long placeId) {
     String jpql = "select m from Menu m" +
-        " where m.placeId = :placeId";
+        " where m.id = :placeId";
     Menu menu;
 
     try {
