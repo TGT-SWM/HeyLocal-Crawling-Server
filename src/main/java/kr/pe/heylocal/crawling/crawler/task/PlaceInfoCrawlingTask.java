@@ -78,14 +78,15 @@ public class PlaceInfoCrawlingTask implements CrawlingTask {
     //시간 더보기 버튼이 있는지 확인
     WebElement moreBtnElement = null;
     try {
-      moreBtnElement = crawlingDriver.findElement(By.className("openhour_wrap")).findElement(By.className("btn_more"));
+      moreBtnElement = crawlingDriver.findElement(By.className("openhour_wrap"))
+          .findElement(By.className("btn_more"));
     } catch (NoSuchElementException e) {
       hasMoreBtn = false;
     }
 
     List<WebElement> timeElements;
     if (hasMoreBtn) { //만약 시간 더보기 버튼이 있다면
-      moreBtnElement.click();
+      moreBtnElement.sendKeys("\uE007"); //클릭
 
       timeElements = crawlingDriver.findElement(By.className("inner_floor"))
           .findElement(By.className("list_operation"))
