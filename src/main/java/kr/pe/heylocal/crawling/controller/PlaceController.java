@@ -9,6 +9,8 @@
 package kr.pe.heylocal.crawling.controller;
 
 import kr.pe.heylocal.crawling.dto.MenuDto;
+import kr.pe.heylocal.crawling.dto.PlaceInfoDto;
+import kr.pe.heylocal.crawling.exception.NotFoundException;
 import kr.pe.heylocal.crawling.exception.ServiceUnavailableException;
 import kr.pe.heylocal.crawling.service.PlaceMenuService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +28,7 @@ public class PlaceController {
   private final PlaceMenuService placeMenuService;
 
   @GetMapping("/menu")
-  public List<MenuDto> test(@RequestParam String placeId) throws ServiceUnavailableException {
+  public PlaceInfoDto test(@RequestParam long placeId) throws ServiceUnavailableException, NotFoundException {
     return placeMenuService.inquiryMenuInfoOfPlace(placeId);
   }
 }

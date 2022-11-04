@@ -13,7 +13,6 @@ import kr.pe.heylocal.crawling.dto.MenuDto;
 import org.mapstruct.Builder;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
 import org.mapstruct.factory.Mappers;
 
 import java.util.List;
@@ -24,15 +23,15 @@ import java.util.stream.Collectors;
 public interface MenuMapper {
   MenuMapper INSTANCE = Mappers.getMapper(MenuMapper.class);
 
-  MenuDto toMenuDto(String name, String price, String photo);
-  MenuDto toMenuDto(Menu menu);
-  @Mapping(target = "placeId", source = "placeId")
+  MenuDto toDto(String name, String price, String photo);
+  MenuDto toDto(Menu menu);
   @Mapping(target = "id", ignore = true)
+  @Mapping(target = "placeInfo", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "modifiedDate", ignore = true)
-  Menu toMenuEntity(MenuDto menuDto, String placeId);
+  Menu toEntity(MenuDto menuDto);
 
-  default List<MenuDto> toMenuDtoList(Map<String, List<String>> menuInfoMap) {
+  default List<MenuDto> toDtoList(Map<String, List<String>> menuInfoMap) {
     List<MenuDto> result = menuInfoMap.entrySet().stream().map((entry) -> {
       String menuName;
       String menuPrice;
@@ -46,15 +45,15 @@ public interface MenuMapper {
 
       menuPrice = menuInfo.get(0);
       menuName = entry.getKey();
-      return MenuMapper.INSTANCE.toMenuDto(menuName, menuPrice, menuPhoto);
+      return MenuMapper.INSTANCE.toDto(menuName, menuPrice, menuPhoto);
     }).collect(Collectors.toList());
 
     return result;
   }
 
-  default List<MenuDto> toMenuDtoList(List<Menu> menuInfoList) {
+  default List<MenuDto> toDtoList(List<Menu> menuInfoList) {
     return menuInfoList.stream()
-        .map(MenuMapper.INSTANCE::toMenuDto)
+        .map(MenuMapper.INSTANCE::toDto)
         .collect(Collectors.toList());
   }
 }
