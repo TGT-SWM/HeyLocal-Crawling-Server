@@ -31,23 +31,23 @@
 ### 개발 환경
 - 개발 운영체제 : macOS Monterey 12.6
 - OpenJDK 18
-- WebDriver : ChromeDriver 107.0.5304.62 (arm64)
-- WebBrowser : Chrome 107.0.5304.62 (arm64)
+- WebDriver : ChromeDriver 107.0.5304.62 (mac - arm64)
+- WebBrowser : Chrome 107.0.5304.62 (mac - arm64)
 
 ### 배포 환경
-> 추후 수정 예정
 - 서버 운영체제 : Amazon Linux 2
 - AWS Services
     - EC2
-    - S3
     - RDS
-    - SNS (Simple Notification Service)
-- DB
+- DB (Cache)
     - MariaDB 10.6.8
+- WebDriver : ChromeDriver 107.0.5304.62 (linux - 64)
+- WebBrowser : Chrome 107.0.5304.62 (linux - 64)
 
 ### 사용 라이브러리
 - `spring-boot-starter-web 2.6.10`
 - `spring-boot-starter-validation 2.6.10`
+- `spring-boot-starter-data-jpa 2.6.10`
 - `mapstruct 1.5.2`
 - `selenium-java 4.5.3`
 
@@ -55,10 +55,10 @@
 
 ## 프로젝트 결과물
 ### API
-| Method | EndPoint                                        | 설명                                                   |
-|--------|-------------------------------------------------|------------------------------------------------------|
-| ------ | 장소                                              | ------                                               |
-| GET    | `/place/menu`                                   | 장소의 메뉴 정보 조회                                         |
+| Method | EndPoint                                        | 설명                                                |
+|--------|-------------------------------------------------|---------------------------------------------------|
+| ------ | 장소                                              | ------                                            |
+| GET    | `/place/menu`                                   | 장소의 정보 조회                                         |
 
 
 
@@ -81,4 +81,4 @@
 
 <br/>
 
-최종 수정일 : 2022-10-30
+최종 수정일 : 2022-11-04
