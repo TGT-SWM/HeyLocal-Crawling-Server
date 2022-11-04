@@ -56,7 +56,7 @@ public class CrawlingProcessWatcher {
    * @param id 크롤링이 종료될 아이템 id
    */
   public synchronized void done(long id) {
-    nowProcessingIdSet.remove(id);
+    nowProcessingIdSet.remove(Long.valueOf(id));
     notifyAll();
   }
 }
