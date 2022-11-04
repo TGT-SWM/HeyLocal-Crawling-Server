@@ -45,18 +45,16 @@ public class PlaceMenuService {
       boolean isOldCacheData = isOldCacheData(savedDateTime);
 
       if (!isOldCacheData) { //오래된 데이터가 아니라면
-        log.info("캐싱되어 있고, 오래된 데이터가 아닌 경우");
         result = cacheService.inquiryPlaceInfo(placeId); //DB에서 장소 정보 조회
+        crawlingProcessWatcher.done(placeId); //크롤링 감시 종료
         return result;
 
       } else { //오래된 데이터라면
-        log.info("캐싱되어 있고, 오래된 데이터인 경우");
         cacheService.removePlaceInfo(placeId); //DB에 저장된 메뉴 정보 삭제
       }
     }
 
     //만약 캐싱되어 있지 않다면
-    log.info("크롤링");
     result = crawlingService.crawlingPlaceInfoAndSave(placeId); //크롤러로 장소 정보 조회
 
     crawlingProcessWatcher.done(placeId); //크롤링 감시 종료
