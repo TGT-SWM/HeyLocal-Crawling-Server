@@ -19,7 +19,7 @@ import javax.persistence.*;
     uniqueConstraints={
         @UniqueConstraint(
             name="complex_unique",
-            columnNames={"PLACE_ID", "NAME"}
+            columnNames={"PLACE_INFO_ID", "NAME"}
         )
     }
 )
@@ -32,10 +32,19 @@ public class Menu extends BaseTimeEntity {
   @Id
   @GeneratedValue
   private Long id;
-  @Column(name = "PLACE_ID")
-  private String placeId; //카카오 장소 API 에서 제공하는 장소 ID
   @Column(name = "NAME")
   private String name;
   private String price;
   private String photo;
+  @ManyToOne(optional = false, fetch = FetchType.LAZY)
+  @JoinColumn(name = "PLACE_INFO_ID")
+  private PlaceInfo placeInfo;
+
+  public void setPlaceInfo(PlaceInfo placeInfo) {
+    if (this.placeInfo != null && this.placeInfo != placeInfo) {
+      this.placeInfo.removeMenu(this);
+    }
+    placeInfo.addMenu(this);
+    this.placeInfo = placeInfo;
+  }
 }

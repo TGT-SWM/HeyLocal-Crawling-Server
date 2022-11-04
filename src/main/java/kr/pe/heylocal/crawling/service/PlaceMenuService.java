@@ -9,7 +9,8 @@
 package kr.pe.heylocal.crawling.service;
 
 import kr.pe.heylocal.crawling.crawler.util.CrawlingProcessWatcher;
-import kr.pe.heylocal.crawling.dto.MenuDto;
+import kr.pe.heylocal.crawling.dto.PlaceInfoDto;
+import kr.pe.heylocal.crawling.exception.NotFoundException;
 import kr.pe.heylocal.crawling.exception.ServiceUnavailableException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,7 +18,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Slf4j
 @Service
@@ -35,9 +35,8 @@ public class PlaceMenuService {
    * @param placeId
    * @return
    */
-  public List<MenuDto> inquiryMenuInfoOfPlace(String placeId) throws ServiceUnavailableException {
-    List<MenuDto> result;
-
+  public PlaceInfoDto inquiryMenuInfoOfPlace(long placeId) throws ServiceUnavailableException, NotFoundException {
+    PlaceInfoDto result;
     crawlingProcessWatcher.watch(placeId); //크롤링 감시 시작
 
     LocalDateTime savedDateTime = cacheService.getSavedDateTime(placeId);
@@ -46,16 +45,17 @@ public class PlaceMenuService {
       boolean isOldCacheData = isOldCacheData(savedDateTime);
 
       if (!isOldCacheData) { //오래된 데이터가 아니라면
-        result = cacheService.inquiryMenu(placeId); //DB에서 메뉴 조회
+        result = cacheService.inquiryPlaceInfo(placeId); //DB에서 장소 정보 조회
+        crawlingProcessWatcher.done(placeId); //크롤링 감시 종료
         return result;
 
       } else { //오래된 데이터라면
-        cacheService.removeAllMenuByPlaceId(placeId); //DB에 저장된 메뉴 정보 삭제
+        cacheService.removePlaceInfo(placeId); //DB에 저장된 메뉴 정보 삭제
       }
     }
 
     //만약 캐싱되어 있지 않다면
-    result = crawlingService.crawlingMenuAndSave(placeId); //크롤러로 메뉴 조회
+    result = crawlingService.crawlingPlaceInfoAndSave(placeId); //크롤러로 장소 정보 조회
 
     crawlingProcessWatcher.done(placeId); //크롤링 감시 종료
 

@@ -24,7 +24,7 @@ import java.util.Set;
 @Component
 public class CrawlingProcessWatcher {
   //현재 크롤링 중인 장소 id 컬렉션
-  private Set<String> nowProcessingIdSet = new HashSet<>();
+  private Set<Long> nowProcessingIdSet = new HashSet<>();
 
   /**
    * <pre>
@@ -35,7 +35,7 @@ public class CrawlingProcessWatcher {
    * </pre>
    * @param id 크롤링이 시작될 아이템 id
    */
-  public synchronized void watch(String id) {
+  public synchronized void watch(long id) {
     if ( nowProcessingIdSet.contains(id) ) { //크롤링이 진행 중인 장소 id 라면
       try {
         wait(8000); //크롤링 작업이 끝날때까지 기다린다.
@@ -55,7 +55,7 @@ public class CrawlingProcessWatcher {
    * </pre>
    * @param id 크롤링이 종료될 아이템 id
    */
-  public synchronized void done(String id) {
+  public synchronized void done(long id) {
     nowProcessingIdSet.remove(id);
     notifyAll();
   }
