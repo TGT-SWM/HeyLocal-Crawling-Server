@@ -42,10 +42,18 @@ public class PlaceInfoCrawlingTask implements CrawlingTask {
     crawlingDriver.manage().timeouts().implicitlyWait(Duration.ofMillis(2000)); //페이지 불러오는 여유시간
 
     //메뉴정보 조회
-    getMenuInfo(crawlingDriver, result);
+    try {
+      getMenuInfo(crawlingDriver, result);
+    } catch (NoSuchElementException e) {
+      //메뉴 정보가 없는 경우, ignore
+    }
 
     //영업시간 조회
-    getBusinessTime(crawlingDriver, result);
+    try {
+      getBusinessTime(crawlingDriver, result);
+    } catch (NoSuchElementException e) {
+      //영업시간 정보가 없는 경우, ignore
+    }
 
     return result;
   }
