@@ -10,6 +10,7 @@ package kr.pe.heylocal.crawling.dto;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -18,6 +19,6 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class PlaceInfoDto {
-  private List<BusinessTimeDto> businessTimes;
-  private List<MenuDto> menus;
+  private List<BusinessTimeDto> businessTimes = new ArrayList<>();
+  private List<MenuDto> menus = new ArrayList<>();
 }

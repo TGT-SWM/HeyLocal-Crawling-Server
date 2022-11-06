@@ -23,6 +23,7 @@ public interface BusinessTimeMapper {
   BusinessTime toEntity(BusinessTimeDto businessTimeDto);
 
   default List<BusinessTimeDto> toDtoList(List<String> btInfoList) {
+    if (btInfoList == null) return null;
     return btInfoList.stream().map(this::toDto).collect(Collectors.toList());
   }
 }
