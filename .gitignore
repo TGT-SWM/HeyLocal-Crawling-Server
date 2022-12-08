@@ -43,3 +43,4 @@ out/
 .LSOverride
 /src/main/resources/db-auth-stage.properties
 /src/main/resources/db-auth-production.properties
+/src/main/resources/db-auth-lite-production.properties

@@ -1,11 +1,11 @@
 # ====================== Header ======================
-# fileName       : deploy-production.yml
+# fileName       : deploy-lite-production.yml
 # author         : 우태균
-# date           : 2022/11/01
+# date           : 2022/12/07
 # description    : Github Action 스크립트
 # ====================================================
 
-name: deploy-production
+name: deploy-lite-production
 
 on:
   push:
@@ -43,15 +43,15 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.ACCESS_KEY_SECRET }}
+          aws-access-key-id: ${{ secrets.LITE_PRODUCTION_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.LITE_PRODUCTION_ACCESS_KEY_SECRET }}
           aws-region: ap-northeast-2
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://heylocal-codedeploy/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://heylocal-crawler-codedeploy/$GITHUB_SHA.zip
 
       - name: Code Deploy
-        run: aws deploy create-deployment --application-name heylocal-production-crawling
+        run: aws deploy create-deployment --application-name heylocal-crawler
           --deployment-config-name CodeDeployDefault.OneAtATime
-          --deployment-group-name heylocal-production-crawling-deploy-group
-          --s3-location bucket=heylocal-codedeploy,bundleType=zip,key=$GITHUB_SHA.zip
+          --deployment-group-name heylocal-crawler-DG
+          --s3-location bucket=heylocal-crawler-codedeploy,bundleType=zip,key=$GITHUB_SHA.zip
