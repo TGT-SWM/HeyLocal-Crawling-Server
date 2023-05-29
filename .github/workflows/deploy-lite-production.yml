@@ -48,10 +48,10 @@ jobs:
           aws-region: ap-northeast-2
 
       - name: Upload to S3
-        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://heylocal-crawler-codedeploy/$GITHUB_SHA.zip
+        run: aws s3 cp --region ap-northeast-2 ./$GITHUB_SHA.zip s3://heylocal-crawler-code-deploy/$GITHUB_SHA.zip
 
       - name: Code Deploy
         run: aws deploy create-deployment --application-name heylocal-crawler
           --deployment-config-name CodeDeployDefault.OneAtATime
           --deployment-group-name heylocal-crawler-DG
-          --s3-location bucket=heylocal-crawler-codedeploy,bundleType=zip,key=$GITHUB_SHA.zip
+          --s3-location bucket=heylocal-crawler-code-deploy,bundleType=zip,key=$GITHUB_SHA.zip
